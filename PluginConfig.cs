@@ -20,6 +20,8 @@ namespace ACTOBSPlugin
         private string[] stopRecording = new string[] { };
         private string settingsFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\ACTOBSPlugin.config.json");
 
+        private bool loaded = false;
+
         public bool Enabled
         {
             get => enabled;
@@ -79,6 +81,7 @@ namespace ACTOBSPlugin
 
         public void Load()
         {
+            loaded = true;
             try
             {
                 var loadedConfig = JsonConvert.DeserializeObject<PluginConfig>(File.ReadAllText(settingsFilePath));
@@ -89,7 +92,10 @@ namespace ACTOBSPlugin
                 startRecording = loadedConfig.startRecording;
                 stopRecording = loadedConfig.stopRecording;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                ActGlobals.oFormActMain.WriteExceptionLog(ex, "Exception loading ACTOBSPlugin config");
+            }
         }
         public void Save()
         {
@@ -99,6 +105,8 @@ namespace ACTOBSPlugin
 
         private void FireEvent(bool EnabledChanged = false, bool AutoRenameChanged = false, bool HostPortChanged = false, bool PasswordChanged = false, bool StartRecordingChanged = false, bool StopRecordingChanged = false)
         {
+            if (!loaded) return;
+
             if (EnabledChanged || AutoRenameChanged || HostPortChanged || PasswordChanged || StartRecordingChanged || StopRecordingChanged)
             {
                 Save();

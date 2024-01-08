@@ -19,14 +19,16 @@ namespace ACTOBSPlugin
             { "FFXIV - ACT Combat Start", @"^(?# FFXIV - ACT Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>1)\|" },
             { "FFXIV - Game Combat Start", @"^(?# FFXIV - Game Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>1)\|" },
             { "FFXIV - Countdown Start", @"(?# FFXIV - Countdown Start)\|Battle commencing in (?<time>[^ ]+) seconds! \((?<player>.*?)\)\|" },
+            { "FFXIV - Area Seal", @"(?# FFXIV - Area Seal)(?<area>.*?) will be sealed off in (?<time>[^ ]+) seconds!" },
             { "FFXIV - Engage", @"(?# FFXIV - Countdown Start)\|Engage!\|" },
         };
 
         private Dictionary<string, string> stopRecordingRegexes = new Dictionary<string, string>() {
             // FFXIV
-            { "FFXIV - ACT Combat End", @"^(?# FFXIV - ACT Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>1)\|" },
-            { "FFXIV - Game Combat End", @"^(?# FFXIV - Game Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>1)\|" },
-            { "FFXIV - Wipe", @"(?# FFXIV - Countdown Start)\|Battle commencing in (?<time>[^ ]+) seconds! \((?<player>.*?)\)\|" },
+            { "FFXIV - ACT Combat End", @"^(?# FFXIV - ACT Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>0)\|" },
+            { "FFXIV - Game Combat End", @"^(?# FFXIV - Game Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>0)\|" },
+            { "FFXIV - Wipe", @"^(?# FFXIV - Wipe)(?<type>33)\|(?<timestamp>[^|]*)\|(?<instance>[^|]*)\|(?<command>4000000F)\|" },
+            { "FFXIV - Area Unseal", @"(?# FFXIV - Area Unseal)(?<area>.*?) is no longer sealed." },
         };
 
         public ConfigPanel(PluginConfig config)
@@ -94,7 +96,7 @@ namespace ACTOBSPlugin
         {
             var key = cmbStopRecording.SelectedItem.ToString();
             string value;
-            if (!startRecordingRegexes.TryGetValue(key, out value))
+            if (!stopRecordingRegexes.TryGetValue(key, out value))
             {
                 return;
             }
