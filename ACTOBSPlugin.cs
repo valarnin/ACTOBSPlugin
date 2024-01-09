@@ -86,6 +86,9 @@ namespace ACTOBSPlugin
 
         public void DeInitPlugin()
         {
+            obs.Connected -= Obs_Connected;
+            obs.Disconnected -= Obs_Disconnected;
+            Disconnect();
             ActGlobals.oFormActMain.OnCombatEnd -= OnCombatEndDel;
             ActGlobals.oFormActMain.BeforeLogLineRead -= LogLineDel;
             config.Save();
@@ -128,11 +131,28 @@ namespace ACTOBSPlugin
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
         {
             var dir = GetPluginDirectory();
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "System.Reactive.dll")));
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "System.Threading.Channels.dll")));
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "System.Threading.Tasks.Extensions.dll")));
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "Websocket.Client.dll")));
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "obs-websocket-dotnet.dll")));
+            var autoLoadAssemblies = new string[] {
+                "Newtonsoft.Json.dll",
+                "System.Reactive.dll",
+                "System.Threading.Channels.dll",
+                "System.Threading.Tasks.Extensions.dll",
+                "Websocket.Client.dll",
+                "obs-websocket-dotnet.dll"
+            };
+            var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assemblyFilename in autoLoadAssemblies)
+            {
+                if (currentAssemblies.Any(a => {
+                    if (a.IsDynamic) return false;
+                    var manifest = a.ManifestModule;
+                    if (manifest.ScopeName.Equals(assemblyFilename)) return true;
+                    return false;
+                    }))
+                {
+                    continue;
+                }
+                AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, assemblyFilename)));
+            }
 
             pluginStatusText.Text = "Loading PluginConfig";
             config.Load();
