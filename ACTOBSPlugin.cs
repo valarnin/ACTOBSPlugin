@@ -29,7 +29,10 @@ namespace ACTOBSPlugin
         private List<Regex> startRecordingRegexes = new List<Regex>();
         private List<Regex> stopRecordingRegexes = new List<Regex>();
         private ConfigPanel configPanel;
-        private string lastVidFile;
+
+        private string lastVidFile = "";
+        private bool isConnected = false;
+        private bool isRecording = false;
 
         private string GetPluginDirectory()
         {
@@ -70,6 +73,7 @@ namespace ACTOBSPlugin
 
         private void Obs_Disconnected(object sender, ObsDisconnectionInfo e)
         {
+            isConnected = false;
             UpdateStatus();
             Task.Delay(5000).ContinueWith(_ => {
                 TryConnect();
@@ -78,6 +82,7 @@ namespace ACTOBSPlugin
 
         private void Obs_Connected(object sender, EventArgs e)
         {
+            isConnected = true;
             UpdateStatus();
         }
 
@@ -180,8 +185,10 @@ namespace ACTOBSPlugin
                             {
                                 if (re.IsMatch(line))
                                 {
+                                    isRecording = true;
                                     obs.StartRecord();
                                     UpdateStatus();
+                                    return;
                                 }
                             }
                         }
@@ -191,6 +198,7 @@ namespace ACTOBSPlugin
                             {
                                 if (re.IsMatch(line))
                                 {
+                                    isRecording = false;
                                     // Get this info before calling `StopRecord` because it could change due to delay in stopping recording process
                                     var currentEnc = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter;
                                     var currentZone = ActGlobals.oFormActMain.ActiveZone.ZoneName;
@@ -203,12 +211,13 @@ namespace ACTOBSPlugin
                                             var baseFilename = Path.GetFileNameWithoutExtension(vidFile);
                                             var zoneEnc = string.Join("_", (currentZone + "_" + encTitle).Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries)).TrimEnd('.');
                                             var extension = Path.GetExtension(vidFile);
+                                            var newFileName = baseFilename + "_" + zoneEnc + extension;
                                             var renamedFile = Path.Combine(
                                                 Path.GetDirectoryName(vidFile),
-                                                baseFilename + "_" + zoneEnc + extension
+                                                newFileName
                                                 );
                                             File.Move(vidFile, renamedFile);
-                                            lastVidFile = renamedFile;
+                                            lastVidFile = newFileName;
                                             UpdateStatus();
                                         });
                                     }
@@ -216,6 +225,7 @@ namespace ACTOBSPlugin
                                     {
                                         UpdateStatus();
                                     }
+                                    return;
                                 }
                             }
                         }
@@ -241,10 +251,10 @@ namespace ACTOBSPlugin
         {
             var status = "";
 
-            if (obs.IsConnected)
+            if (isConnected)
             {
                 status += "Connected, ";
-                if (obs.GetRecordStatus().IsRecording)
+                if (isRecording)
                 {
                     status += "Recording";
                 }

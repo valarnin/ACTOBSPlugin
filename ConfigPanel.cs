@@ -18,9 +18,9 @@ namespace ACTOBSPlugin
             // FFXIV
             { "FFXIV - ACT Combat Start", @"^(?# FFXIV - ACT Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>1)\|" },
             { "FFXIV - Game Combat Start", @"^(?# FFXIV - Game Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>1)\|" },
-            { "FFXIV - Countdown Start", @"(?# FFXIV - Countdown Start)\|Battle commencing in (?<time>[^ ]+) seconds! \((?<player>.*?)\)\|" },
-            { "FFXIV - Area Seal", @"(?# FFXIV - Area Seal)(?<area>.*?) will be sealed off in (?<time>[^ ]+) seconds!" },
-            { "FFXIV - Engage", @"(?# FFXIV - Countdown Start)\|Engage!\|" },
+            { "FFXIV - Countdown Start", @"^(?# FFXIV - Countdown Start)(?<type>00)\|(?<timestamp>[^|]*)\|[^|]*\|[^|]*\|Battle commencing in (?<time>[^ ]+) seconds! \((?<player>.*?)\)\|" },
+            { "FFXIV - Area Seal", @"^(?# FFXIV - Area Seal)(?<type>00)\|(?<timestamp>[^|]*)\|[^|]*\|[^|]*\|(?<area>.*?) will be sealed off in (?<time>[^ ]+) seconds!" },
+            { "FFXIV - Engage", @"^(?# FFXIV - Countdown Start)(?<type>00)\|(?<timestamp>[^|]*)\|[^|]*\|[^|]*\|Engage!\|" },
         };
 
         private Dictionary<string, string> stopRecordingRegexes = new Dictionary<string, string>() {
@@ -28,7 +28,7 @@ namespace ACTOBSPlugin
             { "FFXIV - ACT Combat End", @"^(?# FFXIV - ACT Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>0)\|" },
             { "FFXIV - Game Combat End", @"^(?# FFXIV - Game Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>0)\|" },
             { "FFXIV - Wipe", @"^(?# FFXIV - Wipe)(?<type>33)\|(?<timestamp>[^|]*)\|(?<instance>[^|]*)\|(?<command>4000000F)\|" },
-            { "FFXIV - Area Unseal", @"(?# FFXIV - Area Unseal)(?<area>.*?) is no longer sealed." },
+            { "FFXIV - Area Unseal", @"(?# FFXIV - Area Unseal)(?<type>00)\|(?<timestamp>[^|]*)\|[^|]*\|[^|]*\|(?<area>.*?) is no longer sealed." },
         };
 
         public ConfigPanel(PluginConfig config)
