@@ -16,18 +16,16 @@ namespace ACTOBSPlugin
     {
         private OBSWebsocket obs;
 
-        private Label pluginStatusText;
-        private TabPage pluginScreenSpace;
         private LogLineEventDelegate LogLineDel;
 
         private CombatToggleEventDelegate OnCombatEndDel;
 
-        private PluginConfig config = new PluginConfig();
+        private readonly PluginConfig config = new PluginConfig();
 
         // We work around concurrency issues here by just using `ToList` on these collections whenever iterating over them
         // Because changes to the structure are only initialized on init and on the UI thread, we don't need to lock
-        private List<Regex> startRecordingRegexes = new List<Regex>();
-        private List<Regex> stopRecordingRegexes = new List<Regex>();
+        private readonly List<Regex> startRecordingRegexes = new List<Regex>();
+        private readonly List<Regex> stopRecordingRegexes = new List<Regex>();
         private ConfigPanel configPanel;
 
         private string lastVidFile = "";
@@ -136,7 +134,6 @@ namespace ACTOBSPlugin
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "Websocket.Client.dll")));
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(Path.Combine(dir, "obs-websocket-dotnet.dll")));
 
-            this.pluginStatusText = pluginStatusText;
             pluginStatusText.Text = "Loading PluginConfig";
             config.Load();
             RebuildRegexes(true, true);
@@ -156,7 +153,6 @@ namespace ACTOBSPlugin
             };
 
             pluginStatusText.Text = "Creating ConfigPanel";
-            this.pluginScreenSpace = pluginScreenSpace;
             pluginScreenSpace.Text = "ACT OBS Plugin";
             configPanel = new ConfigPanel(config);
             pluginScreenSpace.Controls.Add(configPanel);

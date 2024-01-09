@@ -57,7 +57,7 @@ namespace ACTOBSPlugin
             this.chkEnabled.TabIndex = 0;
             this.chkEnabled.Text = "Enabled";
             this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
+            this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
             // chkAutoRename
             // 
@@ -68,7 +68,7 @@ namespace ACTOBSPlugin
             this.chkAutoRename.TabIndex = 1;
             this.chkAutoRename.Text = "Auto Rename";
             this.chkAutoRename.UseVisualStyleBackColor = true;
-            this.chkAutoRename.CheckedChanged += new System.EventHandler(this.chkAutoRename_CheckedChanged);
+            this.chkAutoRename.CheckedChanged += new System.EventHandler(this.ChkAutoRename_CheckedChanged);
             // 
             // lblPassword
             // 
@@ -95,7 +95,7 @@ namespace ACTOBSPlugin
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 4;
             this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
+            this.txtPassword.TextChanged += new System.EventHandler(this.TxtPassword_TextChanged);
             // 
             // txtIPPort
             // 
@@ -103,7 +103,7 @@ namespace ACTOBSPlugin
             this.txtIPPort.Name = "txtIPPort";
             this.txtIPPort.Size = new System.Drawing.Size(100, 20);
             this.txtIPPort.TabIndex = 5;
-            this.txtIPPort.TextChanged += new System.EventHandler(this.txtIPPort_TextChanged);
+            this.txtIPPort.TextChanged += new System.EventHandler(this.TxtIPPort_TextChanged);
             // 
             // lblStatus
             // 
@@ -151,7 +151,7 @@ namespace ACTOBSPlugin
             this.txtStartRecording.Name = "txtStartRecording";
             this.txtStartRecording.Size = new System.Drawing.Size(256, 421);
             this.txtStartRecording.TabIndex = 10;
-            this.txtStartRecording.TextChanged += new System.EventHandler(this.txtStartRecording_TextChanged);
+            this.txtStartRecording.TextChanged += new System.EventHandler(this.TxtStartRecording_TextChanged);
             // 
             // cmbStartRecording
             // 
@@ -169,7 +169,7 @@ namespace ACTOBSPlugin
             this.btnAddStartRecording.TabIndex = 12;
             this.btnAddStartRecording.Text = "＋";
             this.btnAddStartRecording.UseVisualStyleBackColor = true;
-            this.btnAddStartRecording.Click += new System.EventHandler(this.btnAddStartRecording_Click);
+            this.btnAddStartRecording.Click += new System.EventHandler(this.BtnAddStartRecording_Click);
             // 
             // btnAddStopRecording
             // 
@@ -179,7 +179,7 @@ namespace ACTOBSPlugin
             this.btnAddStopRecording.TabIndex = 14;
             this.btnAddStopRecording.Text = "＋";
             this.btnAddStopRecording.UseVisualStyleBackColor = true;
-            this.btnAddStopRecording.Click += new System.EventHandler(this.btnAddStopRecording_Click);
+            this.btnAddStopRecording.Click += new System.EventHandler(this.BtnAddStopRecording_Click);
             // 
             // cmbStopRecording
             // 
@@ -196,7 +196,7 @@ namespace ACTOBSPlugin
             this.txtStopRecording.Name = "txtStopRecording";
             this.txtStopRecording.Size = new System.Drawing.Size(278, 421);
             this.txtStopRecording.TabIndex = 15;
-            this.txtStopRecording.TextChanged += new System.EventHandler(this.txtStopRecording_TextChanged);
+            this.txtStopRecording.TextChanged += new System.EventHandler(this.TxtStopRecording_TextChanged);
             // 
             // lblStopRecording
             // 

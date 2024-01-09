@@ -16,9 +16,9 @@ namespace ACTOBSPlugin
         private bool autoRename = false;
         private string hostPort = "ws://127.0.0.1:4455";
         private string password = "";
-        private string[] startRecording = new string[] { };
-        private string[] stopRecording = new string[] { };
-        private string settingsFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\ACTOBSPlugin.config.json");
+        private string[] startRecording = Array.Empty<string>();
+        private string[] stopRecording = Array.Empty<string>();
+        private readonly string settingsFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\ACTOBSPlugin.config.json");
 
         private bool loaded = false;
 

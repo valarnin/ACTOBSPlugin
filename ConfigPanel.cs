@@ -12,9 +12,9 @@ namespace ACTOBSPlugin
 {
     public partial class ConfigPanel : UserControl
     {
-        private PluginConfig config;
+        private readonly PluginConfig config;
 
-        private Dictionary<string, string> startRecordingRegexes = new Dictionary<string, string>() {
+        private readonly Dictionary<string, string> startRecordingRegexes = new Dictionary<string, string>() {
             // FFXIV
             { "FFXIV - ACT Combat Start", @"^(?# FFXIV - ACT Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>1)\|" },
             { "FFXIV - Game Combat Start", @"^(?# FFXIV - Game Combat Start)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>1)\|" },
@@ -23,7 +23,7 @@ namespace ACTOBSPlugin
             { "FFXIV - Engage", @"^(?# FFXIV - Countdown Start)(?<type>00)\|(?<timestamp>[^|]*)\|[^|]*\|[^|]*\|Engage!\|" },
         };
 
-        private Dictionary<string, string> stopRecordingRegexes = new Dictionary<string, string>() {
+        private readonly Dictionary<string, string> stopRecordingRegexes = new Dictionary<string, string>() {
             // FFXIV
             { "FFXIV - ACT Combat End", @"^(?# FFXIV - ACT Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>0)\|" },
             { "FFXIV - Game Combat End", @"^(?# FFXIV - Game Combat End)(?<type>260)\|(?<timestamp>[^|]*)\|(?<inACTCombat>[^|]*)\|(?<inGameCombat>0)\|" },
@@ -45,41 +45,40 @@ namespace ACTOBSPlugin
             cmbStopRecording.Items.AddRange(stopRecordingRegexes.Keys.ToArray());
         }
 
-        private void chkEnabled_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             config.Enabled = chkEnabled.Checked;
         }
 
-        private void chkAutoRename_CheckedChanged(object sender, EventArgs e)
+        private void ChkAutoRename_CheckedChanged(object sender, EventArgs e)
         {
             config.AutoRename = chkAutoRename.Checked;
         }
 
-        private void txtIPPort_TextChanged(object sender, EventArgs e)
+        private void TxtIPPort_TextChanged(object sender, EventArgs e)
         {
             config.IPPort = txtIPPort.Text;
         }
 
-        private void txtPassword_TextChanged(object sender, EventArgs e)
+        private void TxtPassword_TextChanged(object sender, EventArgs e)
         {
             config.Password = txtPassword.Text;
         }
 
-        private void txtStartRecording_TextChanged(object sender, EventArgs e)
+        private void TxtStartRecording_TextChanged(object sender, EventArgs e)
         {
             config.StartRecording = txtStartRecording.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private void txtStopRecording_TextChanged(object sender, EventArgs e)
+        private void TxtStopRecording_TextChanged(object sender, EventArgs e)
         {
             config.StopRecording = txtStopRecording.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private void btnAddStartRecording_Click(object sender, EventArgs e)
+        private void BtnAddStartRecording_Click(object sender, EventArgs e)
         {
             var key = cmbStartRecording.SelectedItem.ToString();
-            string value;
-            if (!startRecordingRegexes.TryGetValue(key, out value))
+            if (!startRecordingRegexes.TryGetValue(key, out string value))
             {
                 return;
             }
@@ -92,11 +91,10 @@ namespace ACTOBSPlugin
             txtStartRecording.Text = (txtStartRecording.Text + "\r\n" + value).Trim();
         }
 
-        private void btnAddStopRecording_Click(object sender, EventArgs e)
+        private void BtnAddStopRecording_Click(object sender, EventArgs e)
         {
             var key = cmbStopRecording.SelectedItem.ToString();
-            string value;
-            if (!stopRecordingRegexes.TryGetValue(key, out value))
+            if (!stopRecordingRegexes.TryGetValue(key, out string value))
             {
                 return;
             }
